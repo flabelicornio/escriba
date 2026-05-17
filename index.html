@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escriba — OCR & traducción para textos físicos</title>
-<meta name="description" content="Convierte imágenes y PDFs escaneados en texto limpio. OCR gratuito, traducción Pro. Exporta a EPUB o TXT para leer en SmartReads.">
+<title>Escriba — OCR & Translation for Physical Documents</title>
+<meta name="description" content="Convert scanned images and PDFs into clean text. Free OCR, Pro translation between 8 languages. Export to EPUB or TXT and read in SmartReads.">
+<meta name="keywords" content="OCR, scan to text, document scanner, book scanner, PDF to text, image to text, translation, EPUB converter, Tesseract, Google Vision">
+<meta name="author" content="indplaneta">
+<link rel="canonical" href="https://escriba.indplaneta.com">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://escriba.indplaneta.com">
+<meta property="og:title" content="Escriba — OCR & Translation for Physical Documents">
+<meta property="og:description" content="Convert scanned images and PDFs into clean text. Free OCR, Pro translation between 8 languages. Export to EPUB or TXT.">
+<meta property="og:site_name" content="Escriba by indplaneta">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Escriba — OCR & Translation for Physical Documents">
+<meta name="twitter:description" content="Convert scanned books, documents and PDFs into clean text. Free OCR, Pro translation between 8 languages.">
+
+<!-- hreflang -->
+<link rel="alternate" hreflang="en" href="https://escriba.indplaneta.com">
+<link rel="alternate" hreflang="es" href="https://escriba.indplaneta.com">
+<link rel="alternate" hreflang="x-default" href="https://escriba.indplaneta.com">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Escriba",
+  "url": "https://escriba.indplaneta.com",
+  "description": "OCR and translation tool for scanned documents and books. Convert images and PDFs to clean text, translate between 8 languages, export to EPUB or TXT.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": [
+    { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free" },
+    { "@type": "Offer", "price": "15", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "P1Y" }
+  ],
+  "creator": { "@type": "Organization", "name": "indplaneta", "url": "https://indplaneta.com" }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -154,8 +192,8 @@ footer a:hover{text-decoration:underline;}
 <header>
   <div class="logo">Escriba <span>por indplaneta</span></div>
   <div class="header-right">
-    <span class="license-link" onclick="activateLicense()">¿Tienes una licencia?</span>
-    <div id="tierBadge" class="tier-badge" onclick="openProModal()">Actualizar a Pro</div>
+    <span class="license-link" onclick="activateLicense()">Have a license?</span>
+    <div id="tierBadge" class="tier-badge" onclick="openProModal()">Upgrade to Pro</div>
   </div>
 </header>
 
@@ -170,8 +208,8 @@ footer a:hover{text-decoration:underline;}
       <line x1="20" y1="22" x2="32" y2="22" stroke="#c49a5a" stroke-width="1.5" stroke-linecap="round"/>
       <line x1="20" y1="28" x2="27" y2="28" stroke="#c49a5a" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
-    <p class="drop-title">Sube tu documento escaneado</p>
-    <p class="drop-sub">Arrastra aquí o haz clic para seleccionar<br>Imagen o PDF escaneado de libro, documento o foto</p>
+    <p class="drop-title">Upload your scanned document</p>
+    <p class="drop-sub">Drag & drop here or click to select<br>Scanned image or PDF of a book, document or photo</p>
     <div class="drop-formats">
       <span class="fmt-tag">JPG</span>
       <span class="fmt-tag">PNG</span>
@@ -182,65 +220,73 @@ footer a:hover{text-decoration:underline;}
 
   <div class="preview-wrap" id="previewWrap">
     <div class="preview-header">
-      <span id="previewName">archivo.jpg</span>
-      <button onclick="resetFile()">Cambiar archivo</button>
+      <span id="previewName">file.jpg</span>
+      <button onclick="resetFile()">Change file</button>
     </div>
     <img class="preview-img" id="previewImg" src="" alt="preview">
   </div>
 
-  <div class="options-row">
+  <div class="options-row" style="grid-template-columns:1fr auto 1fr;">
     <div class="opt-group">
-      <label>Idioma del documento</label>
+      <label>Document language</label>
       <select id="srcLang">
-        <option value="eng">Inglés</option>
-        <option value="rus">Ruso</option>
-        <option value="chi_sim">Chino (simplificado)</option>
-        <option value="fra">Francés</option>
-        <option value="ita">Italiano</option>
-        <option value="spa">Español</option>
-        <option value="por">Portugués</option>
-        <option value="deu">Alemán</option>
+        <option value="eng">English</option>
+        <option value="rus">Russian</option>
+        <option value="chi_sim">Chinese (Simplified)</option>
+        <option value="fra">French</option>
+        <option value="ita">Italian</option>
+        <option value="spa">Spanish</option>
+        <option value="por">Portuguese</option>
+        <option value="deu">German</option>
       </select>
     </div>
+    <div style="display:flex;align-items:flex-end;padding-bottom:10px;color:var(--ink3);font-size:20px;">→</div>
     <div class="opt-group">
-      <label id="translateLabel">Traducir al español <span class="pro-tag" id="proTagTranslate">PRO</span></label>
+      <label>Translate to <span class="pro-tag" id="proTagTranslate">PRO</span></label>
       <select id="targetLang" disabled>
-        <option value="">— activa Pro para traducir —</option>
-        <option value="ES">Español</option>
+        <option value="">— upgrade to Pro —</option>
+        <option value="EN-US">English</option>
+        <option value="RU">Russian</option>
+        <option value="ZH">Chinese</option>
+        <option value="FR">French</option>
+        <option value="IT">Italian</option>
+        <option value="ES">Spanish</option>
+        <option value="PT-BR">Portuguese</option>
+        <option value="DE">German</option>
       </select>
-      <p class="opt-note" id="translateNote">Inglés, ruso, chino, francés e italiano → español con DeepL.</p>
+      <p class="opt-note" id="translateNote">Translate between any of 8 languages with DeepL.</p>
     </div>
   </div>
 
   <div class="cta-wrap">
-    <button class="btn-process" id="btnProcess" onclick="processFile()" disabled>Extraer texto</button>
+    <button class="btn-process" id="btnProcess" onclick="processFile()" disabled>Extract text</button>
   </div>
 
   <div class="error-msg" id="errorMsg"></div>
 
   <div class="progress-wrap" id="progressWrap">
     <div class="progress-label">
-      <span id="progressLabel">Iniciando OCR…</span>
+      <span id="progressLabel">Starting OCR…</span>
       <span id="progressPct">0%</span>
     </div>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
     <div class="progress-steps">
-      <div class="pstep" id="step1">Cargando motor</div>
-      <div class="pstep" id="step2">Leyendo imagen</div>
-      <div class="pstep" id="step3">Extrayendo texto</div>
-      <div class="pstep" id="step4">Generando archivo</div>
+      <div class="pstep" id="step1">Loading engine</div>
+      <div class="pstep" id="step2">Reading image</div>
+      <div class="pstep" id="step3">Extracting text</div>
+      <div class="pstep" id="step4">Building file</div>
     </div>
   </div>
 
   <div class="limit-notice" id="limitNotice">
-    Has procesado <strong id="usedCount">0</strong> de <strong>10</strong> documentos gratuitos hoy.
-    <a onclick="openProModal()">Activa Pro</a> para ilimitado + mayor calidad + traducción.
+    You've processed <strong id="usedCount">0</strong> of <strong>10</strong> free documents today.
+    <a onclick="openProModal()">Upgrade to Pro</a> for unlimited + higher accuracy + translation.
   </div>
 
   <div class="result-wrap" id="resultWrap">
     <div class="result-tabs">
-      <button class="rtab active" onclick="showTab('ocr')">Texto extraído</button>
-      <button class="rtab" id="tabTranslate" onclick="showTab('translate')" style="display:none;">Traducción al español</button>
+      <button class="rtab active" onclick="showTab('ocr')">Extracted text</button>
+      <button class="rtab" id="tabTranslate" onclick="showTab('translate')" style="display:none;">Translation</button>
     </div>
     <div class="result-panel active" id="panelOcr">
       <div class="result-text" id="ocrText"></div>
@@ -248,7 +294,7 @@ footer a:hover{text-decoration:underline;}
       <div class="result-actions">
         <button class="btn-dl epub" onclick="downloadEpub('ocr')">↓ EPUB</button>
         <button class="btn-dl txt" onclick="downloadTxt('ocr')">↓ TXT</button>
-        <button class="btn-dl smartready" onclick="openInSmartReady('ocr')">Abrir en SmartReads →</button>
+        <button class="btn-dl smartready" onclick="openInSmartReady('ocr')">Open in SmartReads →</button>
       </div>
     </div>
     <div class="result-panel" id="panelTranslate">
@@ -257,49 +303,48 @@ footer a:hover{text-decoration:underline;}
       <div class="result-actions">
         <button class="btn-dl epub" onclick="downloadEpub('translate')">↓ EPUB</button>
         <button class="btn-dl txt" onclick="downloadTxt('translate')">↓ TXT</button>
-        <button class="btn-dl smartready" onclick="openInSmartReady('translate')">Abrir en SmartReads →</button>
+        <button class="btn-dl smartready" onclick="openInSmartReady('translate')">Open in SmartReads →</button>
       </div>
     </div>
   </div>
 
-  <!-- Pricing -->
   <div class="pricing-section">
-    <h2 class="pricing-title">Simple y justo</h2>
-    <p class="pricing-sub">Empieza gratis. Actualiza cuando lo necesites.</p>
+    <h2 class="pricing-title">Simple & fair</h2>
+    <p class="pricing-sub">Start free. Upgrade when you need more.</p>
     <div class="pricing-grid">
 
       <div class="plan-card">
         <div>
-          <div class="plan-name">Gratuito</div>
-          <div class="plan-price">$0 <span>/ siempre</span></div>
+          <div class="plan-name">Free</div>
+          <div class="plan-price">$0 <span>/ forever</span></div>
         </div>
         <ul class="plan-features">
-          <li>10 documentos por día</li>
-          <li>OCR en browser (Tesseract)</li>
-          <li>Exportar EPUB y TXT</li>
-          <li>Importar en SmartReads</li>
-          <li class="no">Traducción al español</li>
-          <li class="no">OCR alta precisión (Vision)</li>
-          <li class="no">Sin límite diario</li>
+          <li>10 documents per day</li>
+          <li>In-browser OCR (Tesseract)</li>
+          <li>Export to EPUB & TXT</li>
+          <li>Open in SmartReads</li>
+          <li class="no">Translation between languages</li>
+          <li class="no">High-accuracy OCR (Vision)</li>
+          <li class="no">Unlimited documents</li>
         </ul>
-        <button class="btn-plan free-btn" onclick="document.getElementById('dropZone').scrollIntoView({behavior:'smooth'})">Usar gratis</button>
+        <button class="btn-plan free-btn" onclick="document.getElementById('dropZone').scrollIntoView({behavior:'smooth'})">Use for free</button>
       </div>
 
       <div class="plan-card featured">
         <div>
           <div class="plan-name">Pro</div>
-          <div class="plan-price">$15 <span>/ año</span></div>
+          <div class="plan-price">$15 <span>/ year</span></div>
         </div>
         <ul class="plan-features">
-          <li>Documentos ilimitados</li>
-          <li>OCR alta precisión (Google Vision)</li>
-          <li>Traducción al español (DeepL)</li>
-          <li>Limpieza automática de texto</li>
-          <li>Exportar EPUB y TXT</li>
-          <li>Importar en SmartReads</li>
-          <li>Soporte prioritario</li>
+          <li>Unlimited documents</li>
+          <li>High-accuracy OCR (Google Vision)</li>
+          <li>Translation between 8 languages (DeepL)</li>
+          <li>Automatic text cleanup</li>
+          <li>Export to EPUB & TXT</li>
+          <li>Open in SmartReads</li>
+          <li>Priority support</li>
         </ul>
-        <button class="btn-plan pro-btn" onclick="openProModal()">Obtener Pro — $15/año</button>
+        <button class="btn-plan pro-btn" onclick="openProModal()">Get Pro — $15/year</button>
       </div>
 
     </div>
@@ -308,9 +353,9 @@ footer a:hover{text-decoration:underline;}
 </main>
 
 <footer>
-  Escriba es parte del ecosistema <a href="https://www.indplaneta.com/techcorp/human-technologies" target="_blank">IndPlaneta</a> ·
-
-  <a href="mailto:info@indplaneta.com">info@indplaneta.com</a>
+  Escriba is part of the <a href="https://indplaneta.com" target="_blank">indplaneta</a> ecosystem ·
+  <a href="https://smartreads.indplaneta.com" target="_blank">SmartReads</a> ·
+  <a href="mailto:hola@indplaneta.com">hola@indplaneta.com</a>
 </footer>
 
 <!-- Pro Modal -->
@@ -318,20 +363,19 @@ footer a:hover{text-decoration:underline;}
   <div class="modal">
     <button class="modal-close" onclick="closeProModal()">×</button>
     <div class="modal-title">Escriba Pro</div>
-    <p class="modal-sub">OCR de alta precisión, traducción automática al español y documentos ilimitados.</p>
-    <div class="modal-price">$15 <span>USD / año</span></div>
-    <div class="modal-billed">Un solo pago anual · Sin suscripción trampa · Cancela cuando quieras</div>
+    <p class="modal-sub">High-accuracy OCR, translation between 8 languages, and unlimited documents. One simple annual payment.</p>
+    <div class="modal-price">$15 <span>USD / year</span></div>
+    <div class="modal-billed">Billed annually · No hidden fees · Cancel anytime</div>
     <ul class="modal-features">
-      <li>Documentos ilimitados (sin límite diario)</li>
-      <li>OCR con Google Vision — precisión profesional</li>
-      <li>Traducción al español vía DeepL — inglés, ruso, chino, francés, italiano</li>
-      <li>Limpieza automática: sin números de página ni saltos extraños</li>
-      <li>Exportar a EPUB y TXT</li>
-      <li>Abrir directo en SmartReads</li>
+      <li>Unlimited documents (no daily limit)</li>
+      <li>Google Vision OCR — professional accuracy</li>
+      <li>Translation between 8 languages via DeepL — English, Russian, Chinese, French, Italian, Spanish, Portuguese, German</li>
+      <li>Automatic text cleanup — removes page numbers, odd line breaks</li>
+      <li>Export to EPUB & TXT</li>
+      <li>Open directly in SmartReads</li>
     </ul>
-    <!-- ↓ REEMPLAZA CON TU CHECKOUT URL DE LEMON SQUEEZY -->
-    <button class="btn-checkout" onclick="goToCheckout()">Obtener Escriba Pro — $15/año</button>
-    <p class="modal-guarantee">🔒 Pago seguro vía Lemon Squeezy · Garantía de devolución 7 días</p>
+    <button class="btn-checkout" onclick="goToCheckout()">Get Escriba Pro — $15/year</button>
+    <p class="modal-guarantee">🔒 Secure payment via Lemon Squeezy · 7-day money-back guarantee</p>
   </div>
 </div>
 
@@ -340,15 +384,16 @@ footer a:hover{text-decoration:underline;}
 // ═══════════════════════════════════════════
 // CONFIGURACIÓN — completa antes de publicar
 // ═══════════════════════════════════════════
-const LS_CHECKOUT_URL = 'https://technologycorporation.lemonsqueezy.com/checkout/buy/3c5e8a68-f34b-4c31-a525-9e2c1b6c3be3'; // ← tu checkout URL de Lemon Squeezy
-const LS_STORE_ID     = '341954';     // ← tu Store ID de Lemon Squeezy
+const LS_CHECKOUT_URL = 'LEMON_SQUEEZY_CHECKOUT_URL'; // ← tu checkout URL de Lemon Squeezy
+const LS_STORE_ID     = 'LEMON_SQUEEZY_STORE_ID';     // ← tu Store ID de Lemon Squeezy
 const CF_WORKER       = 'https://escriba-ocr.wolves-and-crows.workers.dev';
 const FREE_DAILY_LIMIT = 10;
 // ═══════════════════════════════════════════
 
 // Verificar licencia Pro
+const COURTESY_KEYS = ['ESCRIBA-COURTESY-2025','ESCRIBA-INDPLANETA-01','ESCRIBA-INDPLANETA-02','ESCRIBA-BETA-ACCESS-1','ESCRIBA-FOUNDING-01'];
 const LICENSE_KEY = localStorage.getItem('escriba_license') || '';
-const IS_PRO = LICENSE_KEY.length > 10;
+const IS_PRO = LICENSE_KEY.length > 10 || COURTESY_KEYS.includes(LICENSE_KEY);
 
 // Detectar redirect post-pago LS → ?activated=true&license=KEY
 const _p = new URLSearchParams(location.search);
@@ -363,14 +408,24 @@ function initUI() {
   const badge = document.getElementById('tierBadge');
   const targetLang = document.getElementById('targetLang');
   if (IS_PRO) {
-    badge.textContent = '✦ Pro activo';
+    badge.textContent = '✦ Pro';
     badge.classList.add('pro');
     badge.onclick = null;
     badge.style.cursor = 'default';
     targetLang.disabled = false;
-    targetLang.innerHTML = '<option value="">— sin traducción —</option><option value="ES" selected>→ Español</option>';
+    targetLang.innerHTML = `
+      <option value="">— no translation —</option>
+      <option value="EN-US">English</option>
+      <option value="RU">Russian</option>
+      <option value="ZH">Chinese</option>
+      <option value="FR">French</option>
+      <option value="IT">Italian</option>
+      <option value="ES">Spanish</option>
+      <option value="PT-BR">Portuguese</option>
+      <option value="DE">German</option>
+    `;
     document.getElementById('proTagTranslate').style.display = 'none';
-    document.getElementById('translateNote').textContent = 'Selecciona idioma de destino.';
+    document.getElementById('translateNote').textContent = 'Select target language for translation.';
   }
 }
 
@@ -415,7 +470,7 @@ function resetFile() {
 
 async function processFile() {
   if (!currentFile) return;
-  if (!IS_PRO && usedToday >= FREE_DAILY_LIMIT) { showError('Límite diario alcanzado (10 docs).'); openProModal(); return; }
+  if (!IS_PRO && usedToday >= FREE_DAILY_LIMIT) { showError('Daily limit reached (10 documents).'); openProModal(); return; }
   hideError(); showProgress();
   document.getElementById('resultWrap').style.display = 'none';
   document.getElementById('btnProcess').disabled = true;
@@ -425,30 +480,30 @@ async function processFile() {
     IS_PRO ? await processWithVision(targetLang) : await processWithTesseract(srcLang);
     if (!IS_PRO) { usedToday++; localStorage.setItem('escriba_used_' + todayKey(), usedToday); }
     showResults(); updateLimitNotice();
-  } catch(err) { showError('Error al procesar: ' + err.message); }
+  } catch(err) { showError('Error processing file: ' + err.message); }
   finally { hideProgress(); document.getElementById('btnProcess').disabled = false; }
 }
 
 async function processWithTesseract(lang) {
-  setStep(1,'active'); setProgress(10,'Cargando motor OCR…');
+  setStep(1,'active'); setProgress(10,'Loading OCR engine…');
   const result = await Tesseract.recognize(currentFile, lang||'eng', {
     logger: m => {
-      if (m.status==='loading tesseract core') { setStep(1,'done'); setStep(2,'active'); setProgress(20,'Iniciando…'); }
-      if (m.status==='recognizing text') { setStep(2,'done'); setStep(3,'active'); const p=Math.round(20+m.progress*72); setProgress(p,`Leyendo texto… ${p}%`); }
+      if (m.status==='loading tesseract core') { setStep(1,'done'); setStep(2,'active'); setProgress(20,'Initializing…'); }
+      if (m.status==='recognizing text') { setStep(2,'done'); setStep(3,'active'); const p=Math.round(20+m.progress*72); setProgress(p,`Reading text… ${p}%`); }
     }
   });
-  setStep(3,'done'); setStep(4,'active'); setProgress(96,'Finalizando…');
+  setStep(3,'done'); setStep(4,'active'); setProgress(96,'Finalizing…');
   ocrResult = cleanBasic(result.data.text.trim()); translateResult = '';
   setProgress(100,'Listo'); setStep(4,'done');
 }
 
 async function processWithVision(targetLang) {
-  setStep(1,'done'); setStep(2,'active'); setProgress(20,'Enviando a Google Vision…');
+  setStep(1,'done'); setStep(2,'active'); setProgress(20,'Sending to Google Vision…');
   const res = await fetch(CF_WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({image:currentFileB64, targetLang:targetLang||null}) });
-  if (!res.ok) throw new Error('Error del servidor: ' + res.status);
+  if (!res.ok) throw new Error('Server error: ' + res.status);
   const data = await res.json();
   if (data.error) throw new Error(data.error);
-  setStep(2,'done'); setStep(3,'done'); setStep(4,'active'); setProgress(96,'Procesando…');
+  setStep(2,'done'); setStep(3,'done'); setStep(4,'active'); setProgress(96,'Processing…');
   ocrResult = data.text||''; translateResult = data.translated||'';
   setProgress(100,'Listo'); setStep(4,'done');
 }
@@ -463,10 +518,10 @@ function cleanBasic(raw) {
 
 function showResults() {
   document.getElementById('ocrText').textContent = ocrResult;
-  document.getElementById('wordCount').textContent = wordCount(ocrResult) + ' palabras · ' + ocrResult.length.toLocaleString() + ' caracteres';
+  document.getElementById('wordCount').textContent = wordCount(ocrResult) + ' words · ' + ocrResult.length.toLocaleString() + ' characters';
   const hasT = translateResult.length > 0;
   document.getElementById('tabTranslate').style.display = hasT ? 'inline-block' : 'none';
-  if (hasT) { document.getElementById('translateText').textContent = translateResult; document.getElementById('wordCountTranslate').textContent = wordCount(translateResult) + ' palabras (español)'; }
+  if (hasT) { document.getElementById('translateText').textContent = translateResult; document.getElementById('wordCountTranslate').textContent = wordCount(translateResult) + ' words (translated)'; }
   document.getElementById('resultWrap').style.display = 'block';
   showTab('ocr');
 }
@@ -543,13 +598,13 @@ function closeProModal(){document.getElementById('proModal').classList.remove('o
 
 function goToCheckout(){
   if(LS_CHECKOUT_URL==='LEMON_SQUEEZY_CHECKOUT_URL'){
-    alert('Próximamente. Escríbenos a hola@indplaneta.com para acceso anticipado.');return;
+    alert('Coming soon. Write us at hola@indplaneta.com for early access.');return;
   }
   window.open(LS_CHECKOUT_URL,'_blank');
 }
 
 function activateLicense(){
-  const key=prompt('Ingresa tu clave de licencia Escriba Pro:');
+  const key=prompt('Enter your Escriba Pro license key:');
   if(!key||key.trim().length<10)return;
   localStorage.setItem('escriba_license',key.trim());
   location.reload();
