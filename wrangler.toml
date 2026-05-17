@@ -1,0 +1,11 @@
+name = "escriba"
+compatibility_date = "2026-05-17"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "."
+binding = "ASSETS"
+
+[vars]
+# Las variables secretas van en el dashboard, no aquí
+# GOOGLE_VISION_KEY y DEEPL_KEY se agregan como Secrets en el dashboard
